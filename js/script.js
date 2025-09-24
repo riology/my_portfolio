@@ -1,24 +1,8 @@
 document.addEventListener('DOMContentLoaded', () => {
 
-    // --- DYNAMIC NAVIGATION BAR ---
-    // Hides the navbar on scroll down and shows it on scroll up.
-    const header = document.querySelector('.header');
-    let lastScrollY = window.scrollY;
-
-    window.addEventListener('scroll', () => {
-        if (window.scrollY > 100) { // Add glass class only after some scroll
-            header.classList.add('glass');
-        } else {
-            header.classList.remove('glass');
-        }
-
-        if (lastScrollY < window.scrollY) {
-            header.classList.add('hidden');
-        } else {
-            header.classList.remove('hidden');
-        }
-        lastScrollY = window.scrollY;
-    });
+    // --- PERMANENT NAVIGATION BAR ---
+    // The logic for hiding the navbar on scroll has been removed.
+    // The navbar is now permanently styled by the CSS.
 
     // --- RESPONSIVE HAMBURGER MENU ---
     // Toggles the mobile navigation menu.
