@@ -21,36 +21,26 @@ html {
 }
 
 body {
-  font-family: var(--font-main);
-  background-color: var(--bg-color);
-  background: linear-gradient(-45deg, #0d0d10, #111115, #141420, #111115);
-  background-size: 400% 400%;
-  animation: bg-flow 30s ease infinite;
-  color: var(--text-color);
+    font-family: var(--font-main);
+    background-color: var(--bg-color);
+    background-image:
+        radial-gradient(circle at 20% 30%, rgba(0, 122, 255, 0.15), transparent 70%),
+        radial-gradient(circle at 80% 70%, rgba(175, 82, 222, 0.15), transparent 70%),
+        linear-gradient(180deg, #0d0d10 0%, #111115 100%);
+    color: var(--text-color);
+    overflow-x: hidden;
+    position: relative;
 }
 
-@keyframes bg-flow {
-  0% { background-position: 0% 50%; }
-  50% { background-position: 100% 50%; }
-  100% { background-position: 0% 50%; }
-}
-
-
-body::after {
-  content: "";
-  position: fixed;
-  top: 0; left: 0;
-  width: 200%;
-  height: 200%;
-  background: transparent url("https://www.transparenttextures.com/patterns/stardust.png") repeat;
-  animation: stars-move 100s linear infinite;
-  opacity: 0.08;
-  z-index: -3;
-}
-
-@keyframes stars-move {
-  from { transform: translate(0, 0); }
-  to { transform: translate(-200px, -200px); }
+/* subtle texture overlay */
+body::before {
+    content: "";
+    position: fixed;
+    inset: 0;
+    background: url('https://grainy-gradients.vercel.app/noise.png');
+    opacity: 0.05;
+    pointer-events: none;
+    z-index: -1;
 }
 
 /* --- BACKGROUND ORBS --- */
@@ -88,6 +78,7 @@ body::after {
     right: -200px;
     animation: move-orb-2 25s infinite alternate;
 }
+
 .orb-3 {
   width: 300px;
   height: 300px;
@@ -346,7 +337,5 @@ section {
     }
     .nav-menu{position:fixed;left:-100%;top:70px;flex-direction:column;background-color:var(--bg-color);width:100%;text-align:center;transition:.3s;gap:0}.nav-menu.active{left:0}.nav-item{padding:1.5rem 0;border-bottom:1px solid var(--glass-border)}.hamburger{display:block}.hamburger.active .bar:child(2){opacity:0}.hamburger.active .bar:nth-child(1){transform:translateY(8px) rotate(45deg)}.hamburger.active .bar:nth-child(3){transform:translateY(-8px) rotate(-45deg)}.projects-grid{grid-template-columns:1fr}.footer{flex-direction:column;gap:15px}
 }
-
-
 
 
