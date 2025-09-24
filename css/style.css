@@ -23,7 +23,12 @@ html {
 body {
     font-family: var(--font-main);
     background-color: var(--bg-color);
-    background-image: radial-gradient(circle at 50% 50%, rgba(35, 37, 49, 0.5) 0%, var(--bg-color) 70%);
+    /* ORIGINAL: background-image: radial-gradient(circle at 50% 50%, rgba(35, 37, 49, 0.5) 0%, var(--bg-color) 70%); */
+    
+    /* NEW: Darker base for contrast, and a subtle noise texture for depth */
+    background: #0A0A0E url('data:image/svg+xml,%3Csvg width="100" height="100" viewBox="0 0 100 100" xmlns="http://www.w3.org/2000/svg"%3E%3Cfilter id="noiseFilter"%3E%3CfeTurbulence type="fractalNoise" baseFrequency="0.6" numOctaves="3" stitchTiles="stitch"%3E%3C/feTurbulence%3E%3C/filter%3E%3Crect width="100%" height="100%" filter="url(%23noiseFilter)" opacity="0.05"%3E%3C/rect%3E%3C/svg%3E');
+    background-blend-mode: overlay; /* Blend the noise with the solid background */
+    
     color: var(--text-color);
     overflow-x: hidden;
 }
@@ -40,7 +45,7 @@ section {
     margin-bottom: 60px;
 }
 
-/* --- BACKGROUND ORBS --- */
+/* --- BACKGROUND ORBS (ENHANCED) --- */
 .background-orbs {
     position: fixed;
     top: 0;
@@ -49,42 +54,90 @@ section {
     height: 100%;
     z-index: -1;
     overflow: hidden;
+    /* Added perspective to orbs for a stronger 3D feel */
+    perspective: 1000px;
 }
 
 .orb {
     position: absolute;
     border-radius: 50%;
-    filter: blur(120px);
-    opacity: 0.3;
+    filter: blur(150px); /* Increased blur for a softer, more ethereal look */
+    opacity: 0.25; /* Slightly reduced opacity */
+    will-change: transform, opacity; /* Optimize for animation */
 }
 
+/* Orb 1: Blue, top-left */
 .orb-1 {
-    width: 400px;
-    height: 400px;
-    background: radial-gradient(circle, var(--accent-blue), transparent 60%);
-    top: -100px;
-    left: -150px;
-    animation: move-orb-1 20s infinite alternate;
+    width: 450px;
+    height: 450px;
+    background: radial-gradient(circle, var(--accent-blue) 0%, transparent 60%);
+    top: -150px;
+    left: -200px;
+    animation: move-orb-1 22s ease-in-out infinite alternate, pulse-orb 15s infinite alternate;
 }
 
+/* Orb 2: Purple, bottom-right */
 .orb-2 {
-    width: 500px;
-    height: 500px;
-    background: radial-gradient(circle, var(--accent-purple), transparent 60%);
-    bottom: -200px;
-    right: -200px;
-    animation: move-orb-2 25s infinite alternate;
+    width: 550px;
+    height: 550px;
+    background: radial-gradient(circle, var(--accent-purple) 0%, transparent 60%);
+    bottom: -250px;
+    right: -250px;
+    animation: move-orb-2 27s ease-in-out infinite alternate, pulse-orb 17s infinite alternate;
 }
 
+/* New Orbs for more complexity */
+/* Orb 3: Greenish-blue, mid-right */
+.orb-3 {
+    width: 300px;
+    height: 300px;
+    background: radial-gradient(circle, #00C9A7 0%, transparent 70%); /* New color */
+    top: 20%;
+    right: -100px;
+    animation: move-orb-3 18s ease-in-out infinite alternate, pulse-orb 13s infinite alternate;
+    opacity: 0.2; /* Slightly less opaque */
+}
+
+/* Orb 4: Pinkish-purple, mid-left */
+.orb-4 {
+    width: 380px;
+    height: 380px;
+    background: radial-gradient(circle, #E04E75 0%, transparent 70%); /* New color */
+    bottom: 15%;
+    left: -120px;
+    animation: move-orb-4 24s ease-in-out infinite alternate, pulse-orb 19s infinite alternate;
+    opacity: 0.22;
+}
+
+
+/* Orb Animations */
 @keyframes move-orb-1 {
-    from { transform: translate(0, 0); }
-    to { transform: translate(200px, 100px); }
+    0% { transform: translate3d(0, 0, 0); }
+    100% { transform: translate3d(250px, 120px, 50px); } /* Added Z-axis movement */
 }
 
 @keyframes move-orb-2 {
-    from { transform: translate(0, 0); }
-    to { transform: translate(-150px, -100px); }
+    0% { transform: translate3d(0, 0, 0); }
+    100% { transform: translate3d(-180px, -150px, -30px); } /* Added Z-axis movement */
 }
+
+@keyframes move-orb-3 {
+    0% { transform: translate3d(0, 0, 0); }
+    100% { transform: translate3d(-100px, 80px, 40px); }
+}
+
+@keyframes move-orb-4 {
+    0% { transform: translate3d(0, 0, 0); }
+    100% { transform: translate3d(120px, -90px, -20px); }
+}
+
+/* Pulse animation for a subtle breathing effect */
+@keyframes pulse-orb {
+    0% { transform: scale(1); opacity: 0.25; }
+    50% { transform: scale(1.05); opacity: 0.3; }
+    100% { transform: scale(1); opacity: 0.25; }
+}
+
 
 /* --- GLASSMORPHISM HELPER (for other elements) --- */
 .glass {
@@ -97,28 +150,24 @@ section {
 }
 
 /* --- HEADER & FLOATING NAVIGATION --- */
-/* This wrapper positions the floating navbar in the center */
 .header {
     position: fixed;
-    top: 20px; /* Creates the floating effect */
+    top: 20px;
     left: 50%;
     transform: translateX(-50%);
     z-index: 100;
 }
 
-/* This is the visible, pill-shaped glass container */
 .navbar {
     display: flex;
     align-items: center;
-    padding: 10px 15px; /* Fine-tuned padding */
-    
-    /* Applying the glass effect directly */
+    padding: 10px 15px;
     background: var(--glass-bg);
     backdrop-filter: blur(25px);
     -webkit-backdrop-filter: blur(25px);
     border: 1px solid var(--glass-border);
     box-shadow: 0 8px 32px 0 rgba(0, 0, 0, 0.37);
-    border-radius: 999px; /* This creates the "pill" shape */
+    border-radius: 999px;
 }
 
 .nav-logo {
@@ -126,19 +175,19 @@ section {
     font-weight: 800;
     color: var(--text-color);
     text-decoration: none;
-    padding: 8px 15px; /* Give the logo some space */
+    padding: 8px 15px;
 }
 
 .nav-menu {
     display: flex;
     list-style: none;
-    gap: 5px; /* Reduced gap for a tighter link group */
+    gap: 5px;
 }
 
 .nav-link {
     color: rgba(255, 255, 255, 0.8);
     text-decoration: none;
-    font-size: 0.95rem; /* Slightly smaller font for a sleeker look */
+    font-size: 0.95rem;
     font-weight: 500;
     padding: 10px 18px;
     border-radius: 999px;
@@ -165,7 +214,6 @@ section {
 }
 
 /* --- HERO SECTION --- */
-/* (No changes to other sections, only showing nav and responsive) */
 .hero-section{display:flex;flex-direction:column;justify-content:center;align-items:center;text-align:center;min-height:100vh;padding-top:70px}.hero-section h1{font-size:clamp(3rem,10vw,6rem);font-weight:800}.hero-section .tagline{font-size:clamp(1.2rem,4vw,1.8rem);font-weight:300;margin-top:10px}.cta-button{display:inline-block;margin-top:40px;padding:18px 36px;border-radius:30px;font-size:1rem;font-weight:600;color:var(--text-color);text-decoration:none;position:relative;overflow:hidden;z-index:1;transition:transform .3s ease,box-shadow .3s ease;box-shadow:0 5px 15px rgba(0,0,0,.2)}.cta-button::before{content:'';position:absolute;top:1px;right:1px;bottom:1px;left:1px;background:var(--glass-bg);backdrop-filter:blur(10px);-webkit-backdrop-filter:blur(10px);border-radius:30px;z-index:-1}.cta-button:hover{transform:scale(1.05) translateY(-2px);box-shadow:0 8px 25px var(--glow-color)}
 
 /* --- Other sections remain unchanged --- */
@@ -176,7 +224,6 @@ section {
 @media (max-width:768px){
     .project-card{transform:none}
     
-    /* On mobile, revert the header to a full-width top bar */
     .header {
         top: 0;
         left: 0;
@@ -184,13 +231,12 @@ section {
         transform: none;
     }
     
-    /* Make the navbar full-width and square-cornered inside the header */
     .navbar {
         width: 100%;
         border-radius: 0;
         box-shadow: none;
         background: rgba(17, 17, 21, 0.8);
-        justify-content: space-between; /* Space out logo and hamburger */
+        justify-content: space-between;
         padding: 15px 20px;
     }
     .nav-logo {
