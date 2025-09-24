@@ -23,14 +23,9 @@ html {
 body {
     font-family: var(--font-main);
     background-color: var(--bg-color);
-    /* ORIGINAL: background-image: radial-gradient(circle at 50% 50%, rgba(35, 37, 49, 0.5) 0%, var(--bg-color) 70%); */
-    
-    /* NEW: Darker base for contrast, and a subtle noise texture for depth */
-    background: #0A0A0E url('data:image/svg+xml,%3Csvg width="100" height="100" viewBox="0 0 100 100" xmlns="http://www.w3.org/2000/svg"%3E%3Cfilter id="noiseFilter"%3E%3CfeTurbulence type="fractalNoise" baseFrequency="0.6" numOctaves="3" stitchTiles="stitch"%3E%3C/feTurbulence%3E%3C/filter%3E%3Crect width="100%" height="100%" filter="url(%23noiseFilter)" opacity="0.05"%3E%3C/rect%3E%3C/svg%3E');
-    background-blend-mode: overlay; /* Blend the noise with the solid background */
-    
     color: var(--text-color);
     overflow-x: hidden;
+    position: relative; /* Needed for the background container */
 }
 
 section {
@@ -45,7 +40,8 @@ section {
     margin-bottom: 60px;
 }
 
-/* --- BACKGROUND ORBS (ENHANCED) --- */
+
+/* --- ANIMATED GRADIENT MESH (REVISED) --- */
 .background-orbs {
     position: fixed;
     top: 0;
@@ -54,92 +50,68 @@ section {
     height: 100%;
     z-index: -1;
     overflow: hidden;
-    /* Added perspective to orbs for a stronger 3D feel */
-    perspective: 1000px;
+    background-color: var(--bg-color); /* Set base color here */
 }
 
-.orb {
+/* Renamed to .blob for clarity */
+.blob {
     position: absolute;
     border-radius: 50%;
-    filter: blur(150px); /* Increased blur for a softer, more ethereal look */
-    opacity: 0.25; /* Slightly reduced opacity */
-    will-change: transform, opacity; /* Optimize for animation */
+    filter: blur(120px); /* This is key to blending the colors */
+    opacity: 0.6;
+    will-change: transform;
 }
 
-/* Orb 1: Blue, top-left */
-.orb-1 {
-    width: 450px;
-    height: 450px;
-    background: radial-gradient(circle, var(--accent-blue) 0%, transparent 60%);
-    top: -150px;
-    left: -200px;
-    animation: move-orb-1 22s ease-in-out infinite alternate, pulse-orb 15s infinite alternate;
+/* Blob 1: Blue */
+.blob-1 {
+    width: 600px;
+    height: 600px;
+    background-color: var(--accent-blue);
+    top: -200px;
+    left: -300px;
+    animation: move-blob-1 20s infinite alternate ease-in-out;
 }
 
-/* Orb 2: Purple, bottom-right */
-.orb-2 {
-    width: 550px;
-    height: 550px;
-    background: radial-gradient(circle, var(--accent-purple) 0%, transparent 60%);
-    bottom: -250px;
-    right: -250px;
-    animation: move-orb-2 27s ease-in-out infinite alternate, pulse-orb 17s infinite alternate;
+/* Blob 2: Purple */
+.blob-2 {
+    width: 700px;
+    height: 700px;
+    background-color: var(--accent-purple);
+    bottom: -300px;
+    right: -350px;
+    animation: move-blob-2 25s infinite alternate ease-in-out;
 }
 
-/* New Orbs for more complexity */
-/* Orb 3: Greenish-blue, mid-right */
-.orb-3 {
-    width: 300px;
-    height: 300px;
-    background: radial-gradient(circle, #00C9A7 0%, transparent 70%); /* New color */
-    top: 20%;
-    right: -100px;
-    animation: move-orb-3 18s ease-in-out infinite alternate, pulse-orb 13s infinite alternate;
-    opacity: 0.2; /* Slightly less opaque */
+/* Blob 3: A new teal color */
+.blob-3 {
+    width: 500px;
+    height: 500px;
+    background-color: #43D9AD;
+    top: 50%;
+    left: 50%;
+    animation: move-blob-3 18s infinite alternate ease-in-out;
 }
 
-/* Orb 4: Pinkish-purple, mid-left */
-.orb-4 {
-    width: 380px;
-    height: 380px;
-    background: radial-gradient(circle, #E04E75 0%, transparent 70%); /* New color */
-    bottom: 15%;
-    left: -120px;
-    animation: move-orb-4 24s ease-in-out infinite alternate, pulse-orb 19s infinite alternate;
-    opacity: 0.22;
+/* New, more complex Blob Animations */
+@keyframes move-blob-1 {
+    0%   { transform: translate(0, 0) scale(1); }
+    50%  { transform: translate(400px, 100px) scale(1.2) rotate(90deg); }
+    100% { transform: translate(0, 0) scale(1); }
 }
 
-
-/* Orb Animations */
-@keyframes move-orb-1 {
-    0% { transform: translate3d(0, 0, 0); }
-    100% { transform: translate3d(250px, 120px, 50px); } /* Added Z-axis movement */
+@keyframes move-blob-2 {
+    0%   { transform: translate(0, 0) scale(1); }
+    50%  { transform: translate(-300px, -200px) scale(0.8) rotate(180deg); }
+    100% { transform: translate(0, 0) scale(1); }
 }
 
-@keyframes move-orb-2 {
-    0% { transform: translate3d(0, 0, 0); }
-    100% { transform: translate3d(-180px, -150px, -30px); } /* Added Z-axis movement */
-}
-
-@keyframes move-orb-3 {
-    0% { transform: translate3d(0, 0, 0); }
-    100% { transform: translate3d(-100px, 80px, 40px); }
-}
-
-@keyframes move-orb-4 {
-    0% { transform: translate3d(0, 0, 0); }
-    100% { transform: translate3d(120px, -90px, -20px); }
-}
-
-/* Pulse animation for a subtle breathing effect */
-@keyframes pulse-orb {
-    0% { transform: scale(1); opacity: 0.25; }
-    50% { transform: scale(1.05); opacity: 0.3; }
-    100% { transform: scale(1); opacity: 0.25; }
+@keyframes move-blob-3 {
+    0%   { transform: translate(-50%, -50%) scale(1) rotate(0deg); }
+    100% { transform: translate(calc(-50% + 150px), calc(-50% - 150px)) scale(1.3) rotate(360deg); }
 }
 
 
-/* --- GLASSMORPHISM HELPER (for other elements) --- */
+/* --- GLASSMORPHISM HELPER --- */
 .glass {
     background: var(--glass-bg);
     backdrop-filter: blur(20px);
@@ -242,5 +214,5 @@ section {
     .nav-logo {
         padding: 0;
     }
-    .nav-menu{position:fixed;left:-100%;top:70px;flex-direction:column;background-color:var(--bg-color);width:100%;text-align:center;transition:.3s;gap:0}.nav-menu.active{left:0}.nav-item{padding:1.5rem 0;border-bottom:1px solid var(--glass-border)}.hamburger{display:block}.hamburger.active .bar:nth-child(2){opacity:0}.hamburger.active .bar:nth-child(1){transform:translateY(8px) rotate(45deg)}.hamburger.active .bar:nth-child(3){transform:translateY(-8px) rotate(-45deg)}.projects-grid{grid-template-columns:1fr}.footer{flex-direction:column;gap:15px}
+    .nav-menu{position:fixed;left:-100%;top:70px;flex-direction:column;background-color:var(--bg-color);width:100%;text-align:center;transition:.3s;gap:0}.nav-menu.active{left:0}.nav-item{padding:1.5rem 0;border-bottom:1px solid var(--glass-border)}.hamburger{display:block}.hamburger.active .bar:child(2){opacity:0}.hamburger.active .bar:nth-child(1){transform:translateY(8px) rotate(45deg)}.hamburger.active .bar:nth-child(3){transform:translateY(-8px) rotate(-45deg)}.projects-grid{grid-template-columns:1fr}.footer{flex-direction:column;gap:15px}
 }
